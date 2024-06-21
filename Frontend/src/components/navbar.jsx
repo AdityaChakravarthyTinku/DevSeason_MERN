@@ -6,7 +6,7 @@ const Navbar = () => {
 
   const handleClick = (button) => {
     setClickedButton(button);
-    setTimeout(() => setClickedButton(null), 300); // Reset after bounce effect
+    setTimeout(() => setClickedButton(null), 300);
   };
 
   const buttons = [
@@ -26,7 +26,7 @@ const Navbar = () => {
             <span className="material-icons"></span>
             <Link to="/aboutus">Online Judge</Link>
           </div>
-          <div className="flex space-x-4">
+          <div className=" space-x-4">
             {buttons.slice(0, 4).map(button => (
               <Link 
                 key={button.name}
@@ -39,7 +39,7 @@ const Navbar = () => {
             ))}
           </div>
         </div>
-        <div className="flex space-x-4">
+        <div className=" space-x-4">
           {buttons.slice(4).map(button => (
             <Link 
               key={button.name}
