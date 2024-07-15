@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/navbar';
+
 import { AuthProvider } from './context/AuthContext';
 import { ProblemProvider } from './context/ProblemContext';
+
 
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -14,6 +16,8 @@ import DeleteProblem from './pages/adminPages/DeleteProblem';
 import UpdateProblem from './pages/adminPages/UpdateProblem';
 
 import ProblemPage from './pages/ProblemPage';
+
+
 
 const App = () => {
   return (

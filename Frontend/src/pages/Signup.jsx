@@ -23,7 +23,7 @@ const Signup = () => {
     try {
       const result = await register(formData);
       console.log(result);
-      setMessage('Signup successful!');
+      setMessage('Signup Done!');
       setTimeout(() => navigate('/'), 2000);
     } catch (err) {
       setMessage('Signup failed!');

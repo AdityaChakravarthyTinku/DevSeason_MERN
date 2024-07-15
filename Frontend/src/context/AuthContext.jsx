@@ -4,19 +4,25 @@ import { loginUser, registerUser } from '../api';
 
 export const AuthContext = createContext();
 
+
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
-  
+
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
-    const userType = localStorage.getItem('userType');
     const userId = localStorage.getItem('userId');
+    const userType = localStorage.getItem('userType');
     if (token && userId) {
+      console.log(token + ''+userId);
       setIsLoggedIn(true);
       setUser({ _id: userId, role: userType });
+    } else {
+      setIsLoggedIn(false);
+      setUser(null);
     }
   }, []);
+  
 
   const login = async (formData, isAdminLogin) => {
     try {

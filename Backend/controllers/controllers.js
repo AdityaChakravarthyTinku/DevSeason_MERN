@@ -45,10 +45,12 @@ exports.registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
     await user.save();
+    console.log(user);
+    console.log(user._id);
 
     const payload = {
       user: {
-        id: user._id,
+        _id: user._id,
         email: user.email,
         role: user.role,
       },
@@ -66,7 +68,7 @@ exports.registerUser = async (req, res) => {
       success: true,
       token,
       user: {
-        id: user._id,
+        _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -101,12 +103,12 @@ exports.loginUser = async (req, res) => {
     }
 
     if (user.role === 'admin' && user.admin_SecurityKey !== admin_SecurityKey) {
-      return res.status(401).json({ msg: 'Invalid Security Key!' });
+      return res.status(401).json({ msg: 'You are an Admin Bro Log in Through Admin portal login Or Else Check Security Key!' });
     }
 
     const payload = {
       user: {
-        id: user._id,
+        _id: user._id,
         email: user.email,
         role: user.role,
       },
@@ -124,7 +126,7 @@ exports.loginUser = async (req, res) => {
       success: true,
       token,
       user: {
-        id: user._id,
+        _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -140,6 +142,7 @@ exports.logoutUser = async (req, res) => {
   try {
     res.clearCookie('token');
     res.json({ success: true, message: 'Logged out successfully' });
+    console.log('User logged out');
     res.redirect('/');
   } catch (err) {
     console.error(err.message);

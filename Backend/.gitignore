@@ -1,0 +1,14 @@
+node_modules
+.env
+compiler/cCodes
+compiler/cppCodes
+compiler/javaCodes
+compiler/pyCodes
+compiler/cInputs
+compiler/cppInputs
+compiler/javaInputs
+compiler/pyInputs
+compiler/coutput
+compiler/cppoutput
+compiler/javaoutput
+compiler/pyoutput
