@@ -40,7 +40,9 @@ exports.execute = (language, filePath, inputFilePath) => {
 
       const javaFileName = `${className}.java`;
       const newJavaFilePath = path.join(outputDirs.java, javaFileName);
-      fs.renameSync(filePath, newJavaFilePath);
+
+      console.log(`Copying file from ${filePath} to ${newJavaFilePath}`);
+      fs.copyFileSync(filePath, newJavaFilePath);
 
       command = `javac "${newJavaFilePath}" -d "${outputDirs.java}" && cd "${outputDirs.java}" && java ${className} < "${inputFilePath}"`;
       break;
@@ -50,6 +52,8 @@ exports.execute = (language, filePath, inputFilePath) => {
     default:
       return Promise.reject(new Error('Unsupported language'));
   }
+  
+  console.log(`Executing command: ${command}`);
 
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {

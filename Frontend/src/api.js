@@ -7,7 +7,9 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
+
 
 export const registerUser = async (formData) => {
   try {
@@ -18,8 +20,6 @@ export const registerUser = async (formData) => {
   }
 };
 
-
-
 export const loginUser = async (formData) => {
   try {
     const response = await axiosInstance.post('/login', formData);
@@ -29,7 +29,25 @@ export const loginUser = async (formData) => {
   }
 };
 
+export const getUserDetails = async () => {
+  try {
+    const response = await axiosInstance.get('/me');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+    throw error;
+  }
+};
 
+export const updateUserDetails = async (userData) => {
+  try {
+    const response = await axiosInstance.put('/me', userData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating user details:', error);
+    throw error;
+  }
+};
 export const addNewProblem = async (formData) => {
   try {
     const response = await axiosInstance.post('/addproblem', formData);
@@ -65,6 +83,16 @@ export const fetchProblemByOjid = async (ojid) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching problem by Ojid:', error);
+    throw error;
+  }
+};
+
+export const getAllProblems = async () => {
+  try {
+    const response = await axiosInstance.get(`/allProblems`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch problems', error);
     throw error;
   }
 };
@@ -116,3 +144,4 @@ export const submitSolution = async (data) => {
     throw error;
 }
 };
+

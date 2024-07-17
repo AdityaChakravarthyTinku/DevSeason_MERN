@@ -20,6 +20,11 @@ const AdminDash = () => {
             Update Problem
           </button>
         </Link>
+        <Link to="/view-problems">
+          <button className="bg-green-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-600 transition duration-300">
+            View All Problems
+          </button>
+        </Link>
       </div>
     </div>
   );

@@ -20,7 +20,11 @@ exports.generateFile = (language, code) => {
   const dirCodes = directories[language]; // Get the directory based on the language
   const fileID = uuid();
   const filePath = path.join(dirCodes, `${fileID}.${language}`);
+  console.log(`Creating file at: ${filePath}`);
+
   fs.writeFileSync(filePath, code);
+  console.log(`File created at: ${filePath}`);
+
 
 
 

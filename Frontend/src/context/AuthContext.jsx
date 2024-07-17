@@ -1,28 +1,37 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { loginUser, registerUser } from '../api';
+import { loginUser, registerUser, getUserDetails } from '../api';
 
 export const AuthContext = createContext();
-
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+
+  const fetchUserDetails = useCallback(async () => {
+    try {
+      const userDetails = await getUserDetails();
+      setUser(userDetails);
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      logout(); // Logout if token is invalid or expired
+    }
+  }, []); // Empty dependency array since getUserDetails does not depend on any props or state
 
   useEffect(() => {
     const token = localStorage.getItem('jwtToken');
     const userId = localStorage.getItem('userId');
     const userType = localStorage.getItem('userType');
     if (token && userId) {
-      console.log(token + ''+userId);
+      console.log(token + '' + userId);
       setIsLoggedIn(true);
+      fetchUserDetails();
       setUser({ _id: userId, role: userType });
     } else {
       setIsLoggedIn(false);
       setUser(null);
     }
-  }, []);
-  
+  }, [fetchUserDetails]); // Adding fetchUserDetails to the dependency array
 
   const login = async (formData, isAdminLogin) => {
     try {
@@ -63,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, user, login, register, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, user,setUser, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

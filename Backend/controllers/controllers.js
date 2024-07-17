@@ -160,172 +160,7 @@ exports.checkAuth = async (req, res) => {
 };
 
 
-exports.addProblem = async (req, res) => {
-  const { ojid, title, topic, difficulty, statement, tutorialLink, codeInput } = req.body;
 
-  try {
-    // Check if a problem with the same ojid already exists
-    let problem = await Problem.findOne({ ojid });
-    if (problem) {
-      return res.status(400).json({ msg: 'Problem already exists' });
-    }
-
-    // Create a new Problem instance
-    problem = new Problem({
-      ojid,
-      title,
-      topic,
-      difficulty,
-      statement,
-      tutorialLink,
-      codeInput  // Ensure codeInput is passed as an array of objects from the frontend
-    });
-
-    // Save the new problem to the database
-    await problem.save();
-
-    // Respond with success message and the newly created problem
-    res.status(201).json({
-      message: 'Problem added successfully!',
-      success: true,
-      problem,
-    });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
-
-
-exports.updateProblem = async (req, res) => {
-  const { ojid } = req.params;
-  const { title, topic, statement, tutorialLink, codeInput,difficulty } = req.body;
-
-  try {
-    let problem = await Problem.findOne({ ojid });
-    if (!problem) {
-      return res.status(404).json({ msg: 'Problem not found' });
-    }
-
-    if (title) problem.title = title;
-    if (topic) problem.topic = topic;
-    if (statement) problem.statement = statement;
-    if (tutorialLink) problem.tutorialLink = tutorialLink;
-    if (codeInput) problem.codeInput = codeInput;
-    if(difficulty) problem.difficulty = difficulty;
-
-    await problem.save();
-
-    res.status(200).json({
-      message: 'Problem updated successfully!',
-      success: true,
-      problem,
-    });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
-exports.deleteProblem = async (req, res) => {
-  const { ojid } = req.params;
-
-  try {
-    let problem = await Problem.findOneAndDelete({ ojid });
-    if (!problem) {
-      return res.status(404).json({ msg: 'Problem not found' });
-    }
-
-    res.status(200).json({
-      message: 'Problem deleted successfully!',
-      success: true,
-      problem,
-    });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
-
-exports.getProblemByOjid = async (req, res) => {
-  try {
-    const { ojid } = req.params;
-    const problem = await Problem.findOne({ ojid });
-
-    if (!problem) {
-      return res.status(404).json({ msg: 'No problem found with this Ojid' });
-    }
-
-    res.status(200).json(problem);
-  } catch (error) {
-    console.error('Error fetching problem by Ojid:', error);
-    res.status(500).json({ msg: 'Failed to fetch problem by Ojid' });
-  }
-};
-
-
-
-exports.addTestCases = async (req, res) => {
-  const { ojid } = req.params;
-  const { testCases } = req.body;
-
-  try {
-    const problem = await Problem.findOne({ ojid: ojid });
-    if (!problem) {
-      return res.status(404).json({ msg: 'Problem not found' });
-    }
-
-    const existingTestCase = await TestCase.findOne({ problemId: problem._id });
-    if (existingTestCase) {
-      return res.status(400).json({ msg: 'Test cases for this problem already exist' });
-    }
-
-    // Create test case document
-    const newTestCase = new TestCase({
-      problemId: problem._id,
-      testCases,
-    });
-
-    // Save the test case into the database
-    const createdTestCase = await newTestCase.save();
-
-    res.status(201).json({
-      message: 'Test cases added successfully!',
-      success: true,
-      testCase: createdTestCase,
-    });
-  
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
-
-exports.deleteTestCases = async (req, res) => {
-  const { ojid } = req.params;
-
-  try {
-    const problem = await Problem.findOne({ ojid: ojid });
-    if (!problem) {
-      return res.status(404).json({ msg: 'Problem not found' });
-    }
-
-    // Delete the test case for the given problemId
-    const deletedTestCase = await TestCase.findOneAndDelete({ problemId: problem._id });
-
-    if (!deletedTestCase) {
-      return res.status(404).json({ msg: 'No test cases found for the problem' });
-    }
-
-    res.json({
-      message: 'Test cases deleted successfully!',
-      success: true,
-      deletedTestCase,
-    });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
 
 // Add this function for fetching test cases by problemId (using ojid)
 exports.getTestCasesByProblemId = async (req, res) => {
@@ -409,9 +244,9 @@ exports.submitSolution = async (req, res) => {
     }
 
     // Fetch the test cases for the problem
-    console.log(`Fetching test cases for problemId: ${problem._id}`);
+    // console.log(`Fetching test cases for problemId: ${problem._id}`);
     const testCases = await TestCase.findOne({ problemId: problem._id.toString() });
-    console.log(`Retrieved test cases: ${testCases}`);
+    // console.log(`Retrieved test cases: ${testCases}`);
     if (!testCases || testCases.testCases.length === 0) {
       return res.status(404).json({ msg: 'No test cases found for the problem' });
     }
@@ -428,12 +263,15 @@ exports.submitSolution = async (req, res) => {
       
       try {
         const startTime = Date.now();
+        console.log('Strteddd:::\n\n' + inputFilePath + '\n\n'+filePath +'\n\n'+ testCase)
         const output = await execute(language, filePath, inputFilePath);
         const endTime = Date.now();
         const runtime = endTime - startTime;
         totalRuntime += runtime;
 
         if (!(output.trim() === testCase.output.trim())) {
+          console.log(output.trim());
+          console.log(testCase.output.trim());
           verdict = 'WA'; // Wrong Answer
           console.log("Running Stopped in this test case");
           break;
@@ -519,3 +357,93 @@ exports.getSolution = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
+exports.getAllProblems = async (req, res) => {
+  try {
+    const problems = await Problem.find({});
+    res.status(200).json(problems);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve problems' });
+  }
+};
+
+exports.getUserSubmissions = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const submissions = await Solution.find({ userId });
+    res.status(200).json(submissions);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+exports.getProblemSubmissions = async (req, res) => {
+  const { problemId } = req.params;
+  try {
+    const submissions = await Solution.find({ problemId });
+    res.status(200).json(submissions);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+
+exports.getLeaderboard = async (req, res) => {
+  try {
+    const leaderboard = await Solution.aggregate([
+      { $match: { verdict: 'AC' } },
+      { $group: { _id: "$userId", totalScore: { $sum: 1 }, totalTime: { $sum: "$runtime" } } },
+      { $lookup: { from: 'users', localField: '_id', foreignField: '_id', as: 'user' } },
+      { $unwind: "$user" },
+      { $sort: { totalScore: -1, totalTime: 1 } }
+    ]);
+    res.status(200).json(leaderboard);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+
+exports.getUserDetails = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('-password');
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+exports.updateUserDetails = async (req, res) => {
+  const { name, email, bio } = req.body;
+
+  // Build user object
+  const userFields = {};
+  if (name) userFields.name = name;
+  if (email) userFields.email = email;
+  if (bio) userFields['profile.bio'] = bio;
+
+  try {
+    let user = await User.findByIdAndUpdate(
+      req.user._id,
+      { $set: userFields },
+      { new: true }
+    ).select('-password');
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+

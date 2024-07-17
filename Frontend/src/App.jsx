@@ -17,7 +17,9 @@ import UpdateProblem from './pages/adminPages/UpdateProblem';
 
 import ProblemPage from './pages/ProblemPage';
 
-
+import UserProfile from './pages/ProfilePage';
+import Leaderboard from './pages/Leaderboard';
+import ViewProblems from './pages/Problems';
 
 const App = () => {
   return (
@@ -36,6 +38,9 @@ const App = () => {
             <Route path="/delete-problem" element={<DeleteProblem />} />
             <Route path="/update-problem" element={<UpdateProblem />} />
             <Route path="/problem-page/:ojid" element={<ProblemPage />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/view-problems" element={<ViewProblems />} />
           </Routes>
         </Router>
       </ProblemProvider>

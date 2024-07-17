@@ -5,14 +5,22 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const routes = require('./routes/routes');
 dotenv.config();
+const cookieParser = require('cookie-parser');
+
+// Add cookie parser middleware before your routes
 
 const app = express();
 
 connectDB();
-
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:5173', // Replace with your frontend URL
+    credentials: true, // This allows cookies to be sent from the frontend
+  };
+  
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use(routes);
 app.get('/', (req, res) => {
