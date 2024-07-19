@@ -20,7 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.3",
     "react-codemirror2": "^8.0.0",
-    "react-router-dom": "^6.24.1",
+    "react-router-dom": "^6.25.1",
     "uuid": "^10.0.0"
   }
 }

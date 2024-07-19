@@ -97,17 +97,9 @@ export const getAllProblems = async () => {
   }
 };
 
-export const addTestCases = async (ojid, testCases) => {
+export const fetchTestCases = async (ojid) => {
   try {
-    const response = await axiosInstance.post(`/addtestCase/${ojid}`, { testCases });
-    return response.data;
-  } catch (error) {
-    throw error.response.data;
-  }
-};
-export const fetchTestCases = async (problemId) => {
-  try {
-    const response = await axiosInstance.get(`/testCases/${problemId}`);
+    const response = await axiosInstance.get(`/testcases/${ojid}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching test cases:', error);
@@ -115,19 +107,45 @@ export const fetchTestCases = async (problemId) => {
   }
 };
 
-
-export const deleteTestCase = async (ojid) => {
+export const addTestCases = async (ojid, newTestCase) => {
   try {
-    const response = await axiosInstance.delete(`/deletetestCase/${ojid}`);
+    const response = await axiosInstance.post(`/testcases/${ojid}`, { testCases: [newTestCase] });
+    return response.data;
+  } catch (error) {
+    console.error('Error adding test case:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const updateTestCase = async (ojid, testCaseId, updatedTestCase) => {
+  try {
+    const response = await axiosInstance.put(`/testcases/${ojid}/${testCaseId}`, updatedTestCase);
     return response.data;
   } catch (error) {
     throw error.response.data;
   }
 };
 
+
+export const deleteTestCase = async (ojid, testCaseId) => {
+  try {
+    const response = await axiosInstance.delete(`/testcases/${ojid}/${testCaseId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting test case:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
 // Function to run code
 export const runCode = async (data) => {
   const response = await axiosInstance.post('/run', data);
+  return response.data;
+};
+
+export const getLeaderboard = async (ojid) => {
+  const response = await axiosInstance.get(`/leaderboard/${ojid}`);
   return response.data;
 };
 

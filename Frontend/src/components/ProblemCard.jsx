@@ -16,7 +16,11 @@ const ProblemCard = ({ problem }) => {
           <h3 className="text-lg font-bold">{title}</h3>
           <p>{topic}</p>
         </div>
+        
         <p className={`font-bold ${difficultyColors[difficulty]}`}>{difficulty}</p>
+        <Link to={`/leaderboard/${ojid}`} className="block mb-4 p-2 border bg-pink-600 rounded-md shadow hover:bg-violet-500" >
+        <button className='text-white font-bold'>View Leaderboards</button>
+        </Link>
       </div>
     </Link>
   );

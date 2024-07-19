@@ -143,7 +143,10 @@ exports.logoutUser = async (req, res) => {
     res.clearCookie('token');
     res.json({ success: true, message: 'Logged out successfully' });
     console.log('User logged out');
-    res.redirect('/');
+    setTimeout(()=> {
+      console.log('Logging and redirecting to home via timeout');
+      res.redirect('/');
+    },2000)
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -163,31 +166,8 @@ exports.checkAuth = async (req, res) => {
 
 
 // Add this function for fetching test cases by problemId (using ojid)
-exports.getTestCasesByProblemId = async (req, res) => {
-  const { problemId } = req.params;
 
-  try {
-    const problem = await Problem.findOne({ problemId });
-    if (!problem) {
-      return res.status(404).json({ msg: 'Problem not found' });
-    }
 
-    const testCase = await TestCase.findOne({ problemId: problem._id });
-
-    if (!testCase) {
-      return res.status(404).json({ msg: 'No test cases found for the problem' });
-    }
-
-    res.json({
-      message: 'Test cases fetched successfully!',
-      success: true,
-      testCases: testCase.testCases,
-    });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-};
 
 exports.run = async (req, res) => {
   console.log('Running the code begins...');
@@ -212,7 +192,58 @@ exports.run = async (req, res) => {
   }
 };
 
+exports.updateUserStatsAndProgress = async (userId) => {
+  try {
+    // Fetch all AC (Accepted) solutions by the user
+    const solutions = await Solution.find({ userId, verdict: 'AC' });
 
+    // Calculate total attempts (including non-AC solutions)
+    const totalAttempts = await Solution.countDocuments({ userId });
+
+    // Calculate problems solved
+    const problemsSolved = solutions.length;
+
+    // Initialize progress tracker
+    const progressTracker = {};
+
+    // Loop through each solution and fetch corresponding problem details
+    for (const solution of solutions) {
+      const problem = await Problem.findById(solution.problemId);
+
+      if (!problem) {
+        continue; // Skip if the problem is not found (should not normally happen)
+      }
+
+      const { topic, title } = problem;
+
+      if (!progressTracker[topic]) {
+        progressTracker[topic] = {};
+      }
+
+      progressTracker[topic][title] = solution._id; // Store solution ID
+    }
+
+    // Convert progress tracker to the desired format
+    const progressTrackerArray = Object.entries(progressTracker).map(([topicName, problems]) => ({
+      topicName,
+      problemsSolved: Object.entries(problems).map(([problemTitle, solutionId]) => ({
+        problemTitle,
+        solutionId,
+      })),
+    }));
+
+    // Update user stats and progress in the database
+    await User.findByIdAndUpdate(userId, {
+      'profile.stats.problemsSolved': problemsSolved,
+      'profile.stats.totalAttempts': totalAttempts,
+      'profile.progressTracker': progressTrackerArray,
+    });
+
+    console.log('User stats and progress updated successfully');
+  } catch (error) {
+    console.error('Error updating user stats and progress:', error);
+  }
+};
 
 exports.submitSolution = async (req, res) => {
   const { userId, problemId, language, code } = req.body;
@@ -307,6 +338,7 @@ exports.submitSolution = async (req, res) => {
       // Update the existing solution
       solution.verdict = verdict;
       solution.runtime = totalRuntime;
+      solution.language = language;
       solution.attemptInterval = attemptInterval;
       solution.penaltyScore = penaltyScore;
       solution.submittedTime = Date.now();
@@ -315,6 +347,7 @@ exports.submitSolution = async (req, res) => {
       solution = new Solution({
         userId,
         problemId,
+        language,
         verdict,
         runtime: totalRuntime,
         attemptInterval,
@@ -323,6 +356,9 @@ exports.submitSolution = async (req, res) => {
     }
 
     await solution.save();
+
+    await exports.updateUserStatsAndProgress(userId);
+
 
     res.status(201).json({
       message: 'Solution submitted successfully!',
@@ -367,6 +403,7 @@ exports.getAllProblems = async (req, res) => {
   }
 };
 
+
 exports.getUserSubmissions = async (req, res) => {
   const { userId } = req.params;
   try {
@@ -389,23 +426,42 @@ exports.getProblemSubmissions = async (req, res) => {
   }
 };
 
-
-exports.getLeaderboard = async (req, res) => {
+exports.getProblemLeaderboard = async (req, res) => {
+  const { ojid } = req.params;
   try {
-    const leaderboard = await Solution.aggregate([
-      { $match: { verdict: 'AC' } },
-      { $group: { _id: "$userId", totalScore: { $sum: 1 }, totalTime: { $sum: "$runtime" } } },
-      { $lookup: { from: 'users', localField: '_id', foreignField: '_id', as: 'user' } },
-      { $unwind: "$user" },
-      { $sort: { totalScore: -1, totalTime: 1 } }
-    ]);
+    // Retrieve the problem by ojid
+    const problem = await Problem.findOne({ ojid });
+    if (!problem) {
+      return res.status(404).json({ msg: 'Problem not found' });
+    }
+
+    // Get the solutions for the problem _id
+    const submissions = await Solution.find({ problemId: problem._id })
+      .sort({ runtime: 1, penaltyScore: 1 }) // Sort by runtime and penaltyScore
+      .populate('userId', 'name email'); // Populate user details
+
+    // Map to leaderboard format
+    const leaderboard = submissions.map(submission => {
+      if (!submission.userId) {
+        console.error(`Missing userId for submission with id: ${submission._id}`);
+        return null;
+      }
+      return {
+        userName: submission.userId.name,
+        userEmail: submission.userId.email,
+        language: submission.language|| 'Setup not done',
+        runtime: submission.runtime,
+        penaltyScore: submission.penaltyScore,
+        submittedTime: submission.submittedTime
+      };
+    }).filter(entry => entry !== null);
+
     res.status(200).json(leaderboard);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: 'Server error' });
   }
 };
-
 
 exports.getUserDetails = async (req, res) => {
   try {

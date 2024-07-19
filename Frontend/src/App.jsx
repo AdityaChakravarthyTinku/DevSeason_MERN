@@ -18,8 +18,10 @@ import UpdateProblem from './pages/adminPages/UpdateProblem';
 import ProblemPage from './pages/ProblemPage';
 
 import UserProfile from './pages/ProfilePage';
-import Leaderboard from './pages/Leaderboard';
+import Leaderboard from './components/Leaderboard';
 import ViewProblems from './pages/Problems';
+import ManageTestCases from './pages/adminPages/ManageTestCases';
+
 
 const App = () => {
   return (
@@ -39,7 +41,8 @@ const App = () => {
             <Route path="/update-problem" element={<UpdateProblem />} />
             <Route path="/problem-page/:ojid" element={<ProblemPage />} />
             <Route path="/profile" element={<UserProfile />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/leaderboard/:ojid" element={<Leaderboard />} />
+            <Route path="/handle-testcases" element={<ManageTestCases />} />
             <Route path="/view-problems" element={<ViewProblems />} />
           </Routes>
         </Router>

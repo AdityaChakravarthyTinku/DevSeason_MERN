@@ -1,5 +1,6 @@
 // EditorTabs.jsx
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const EditorTabs = ({ input, setInput, output }) => {
     const [activeTab, setActiveTab] = useState('input'); // Default active tab
@@ -47,5 +48,12 @@ const EditorTabs = ({ input, setInput, output }) => {
         </div>
     );
 };
+
+EditorTabs.propTypes = {
+    input: PropTypes.string.isRequired,
+    setInput: PropTypes.func.isRequired,
+    output: PropTypes.string.isRequired,
+};
+
 
 export default EditorTabs;

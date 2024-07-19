@@ -23,7 +23,8 @@ const ViewProblems = () => {
   }, []);
 
   return (
-    <div className="bg-gray-100 min-h-screen p-8">
+    <div className="in-h-screen bg-gradient-to-r from-purple-400 to-pink-400 py-12 px-4">
+    <div className="bg-gray-100 min-h-screen p-8 rounded-lg">
       <h1 className="text-3xl font-bold mb-6">Problems</h1>
 
       {/* Filter Section */}
@@ -73,6 +74,7 @@ const ViewProblems = () => {
         .map(problem => (
           <ProblemCard key={problem.ojid} problem={problem} />
         ))}
+    </div>
     </div>
   );
 };

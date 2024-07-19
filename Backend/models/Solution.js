@@ -12,6 +12,12 @@ const solutionSchema = new Schema({
     ref: 'Problem',
     required: true
   },
+  language:{
+    type: String,
+    required: true,
+    enum: ['c', 'cpp', 'java', 'py']
+
+  },
   verdict: {
     type: String,
     enum: ['AC', 'WA', 'TLE', 'MLE', 'OLE', 'RE', 'CE'],

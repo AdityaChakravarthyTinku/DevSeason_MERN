@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { updateUserDetails } from '../api';
 import { toast } from 'react-toastify';
+import Profile from "../assets/programmer.png"
 
 const UserProfile = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -63,22 +64,22 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
-      <div className="flex items-center justify-between mb-4">
+    <div className="max-w-4xl mx-auto p-8 shadow-lg rounded-lg bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 m-7 ">
+        <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-purple-700">User Profile</h2>
-        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4">
           <img
-            src="/profile-icon.svg" // Replace with your profile icon image
-            alt="Profile"
-            className="h-8 w-8"
-          />
-          <span className="text-gray-600">{user && user.name}</span>
+              src={Profile} // Replace with your profile icon image
+              alt="Profile"
+              className="h-8 w-8"
+            />
+            
+          </div>
         </div>
-      </div>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="name" className="block text-sm font-medium text-white">
             Name
           </label>
           <input
@@ -93,7 +94,7 @@ const UserProfile = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="email" className="block text-sm font-medium text-white">
             Email
           </label>
           <input
@@ -108,7 +109,7 @@ const UserProfile = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="role" className="block text-sm font-medium text-white">
             Role
           </label>
           <input
@@ -121,7 +122,7 @@ const UserProfile = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="date" className="block text-sm font-medium text-white">
             Joined Date
           </label>
           <input
@@ -134,7 +135,7 @@ const UserProfile = () => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="bio" className="block text-sm font-medium text-white">
             Bio
           </label>
           <textarea
@@ -149,17 +150,17 @@ const UserProfile = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Stats</label>
+          <label className="block text-sm font-medium text-white">Stats</label>
           <div className="mt-1 space-y-2">
-            <p className="text-gray-600">Problems Solved: {user?.profile?.stats?.problemsSolved || 0}</p>
-            <p className="text-gray-600">Total Attempts: {user?.profile?.stats?.totalAttempts || 0}</p>
+            <p className="text-white">Problems Solved: {user?.profile?.stats?.problemsSolved || 0}</p>
+            <p className="text-white">Total Attempts: {user?.profile?.stats?.totalAttempts || 0}</p>
           </div>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Progress Tracker</label>
+          <label className="block text-sm font-medium text-white">Progress Tracker</label>
           <ul className="mt-1 space-y-2">
             {user?.profile?.progressTracker?.map((tracker, index) => (
-              <li key={index} className="text-gray-600">
+              <li key={index} className="text-white">
                 {tracker.topicName}: {tracker.problemsSolved}
               </li>
             ))}

@@ -22,6 +22,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const result = await login(formData);
+      console.log(result);
       if (result) {
         setMessage('Login successful!');
         setTimeout(() => navigate('/'), 2000);
@@ -29,7 +30,7 @@ const Login = () => {
         setMessage('Login failed!');
       }
     } catch (err) {
-      setMessage('Login failed!');
+      setMessage('error: ' + err.message);
     }
   };
 
@@ -46,7 +47,7 @@ const Login = () => {
             User
           </button>
           <button 
-            className={`ml-2 px-4 py-2 ${!isUser ? 'bg-gray-300' : 'bg-primary'} text-white rounded`}
+            className={`ml-2 px-4 py-2 ${isUser ? 'bg-gray-300' : 'bg-primary'} text-white rounded`}
             onClick={() => setIsUser(false)}
           >
             Admin
@@ -65,8 +66,9 @@ const Login = () => {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          <div className="mb-4 relative">
-            <label className="block text-primary-dark mb-2" htmlFor="password">Password</label>
+          <label className="block text-primary-dark mb-2" htmlFor="password">Password</label>
+          <div className="mb-4 relative flex">
+          
             <input
               type={showPassword ? 'text' : 'password'}
               name="password"

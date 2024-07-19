@@ -1,19 +1,38 @@
 import { Link } from 'react-router-dom';
+import Image from "../assets/user.png"
+import View from "../assets/viewprob.png"
 
 const UserDashboard = () => {
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold mb-8">User Dashboard</h1>
-      <div className="space-y-4">
+<div className="">
+      <div className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-4xl font-bold mb-8" >
+          <h1 className=" text-emerald-50 text-center py-4">User Dashboard</h1>
+      </div>
+      <div className="bg-gray-100 flex ">
+      
+        
+        <div className="bg-yellow-500 m-4 text-white py-4 px-4 rounded-lg shadow-2xl hover:bg-yellow-600 transition duration-300 w-1/5">
         <Link to="/view-problems">
-          <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">View Problems</button>
+        <img src={View} />
+        <button className=" text-white text-2x1 font-bold">
+            View All Problems
+          </button>
         </Link>
-        <Link to="/submit-solution">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Submit Solution</button>
-        </Link>
+        </div>
+        
+        <div className="bg-orange-500 m-4 text-white py-4 px-4 rounded-lg shadow-2xl hover:bg-orange-600 transition duration-300 w-1/5">
         <Link to="/profile">
-          <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">View Profilee</button>
+        <img src={Image} />
+        <button className=" text-white text-2x1 font-bold">
+            View Profile
+          </button>
         </Link>
+        </div>
+          
+
+
+       
+ 
       </div>
     </div>
   );

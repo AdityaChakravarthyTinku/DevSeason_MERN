@@ -59,12 +59,11 @@ router.post(
 // Route to fetch a solution by user ID and problem ID
 router.get('/fetch/:userId/:problemId', authController.getSolution);
 
-router.post('/addtestCase/:ojid', adminController.addTestCases);
 
-// Route to delete test cases by problemId
-router.delete('/deletetestCase/:ojid', adminController.deleteTestCases);
-
-router.get('/testCases/:problemId', authController.getTestCasesByProblemId);
+router.get('/testcases/:ojid', adminController.getTestCasesByProblemId);
+router.post('/testcases/:ojid', adminController.addTestCases);
+router.put('/testcases/:ojid/:testCaseId', adminController.updateTestCase);
+router.delete('/testcases/:ojid/:testCaseId', adminController.deleteTestCase);
 
 
 router.post('/run', authController.run);
@@ -85,6 +84,19 @@ router.put(
   ],
   authController.updateUserDetails
 );
+
+router.put('/update-stats-and-progress/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    await authController.updateUserStatsAndProgress(userId);
+    res.status(200).json({ message: 'User stats and progress updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating user stats and progress' });
+  }
+});
+
+router.get('/leaderboard/:ojid', authController.getProblemLeaderboard);
 
 // router.get('/leaderboard', adminController.getLeaderboard);
 

@@ -55,7 +55,7 @@ const AddTestCase = () => {
   };
 
   return (
-    <div className="bg-purple-700 min-h-screen flex flex-col items-center justify-center">
+    <div className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 min-h-screen flex flex-col items-center justify-center">
       <div className="max-w-md p-8 bg-white rounded-lg shadow-lg text-center">
         <h2 className="text-3xl font-bold mb-4 text-purple-700">Add Test Cases for Problem ID: {ojid}</h2>
         <form onSubmit={handleSubmit} className="space-y-4">

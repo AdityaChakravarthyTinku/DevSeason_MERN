@@ -67,8 +67,9 @@ const AddProblemForm = () => {
     };
 
     return (
-        <div className="max-w-3xl mx-auto mt-8 p-6 bg-purple-50 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-4 text-purple-700">Add Problem</h2>
+        <div className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+        <div className="max-w-3xl mx-auto p-6 bg-purple-50  rounded-lg shadow-lg">
+            <h2 className="text-3xl font-bold mb-4 text-purple-700">Add Problem</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label htmlFor="ojid" className="block text-sm font-medium text-purple-700">
@@ -78,7 +79,7 @@ const AddProblemForm = () => {
                         type="text"
                         id="ojid"
                         name="ojid"
-                        className="mt-1 block w-full px-3 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                        className="mt-1 block w-full px-4 py-2 rounded-md shadow-md border border-purple-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                         value={formData.ojid}
                         onChange={handleChange}
                         required
@@ -92,7 +93,7 @@ const AddProblemForm = () => {
                         type="text"
                         id="title"
                         name="title"
-                        className="mt-1 block w-full px-3 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                        className="mt-1 block w-full px-4 py-2 rounded-md shadow-md border border-purple-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                         value={formData.title}
                         onChange={handleChange}
                         required
@@ -106,7 +107,7 @@ const AddProblemForm = () => {
                         type="text"
                         id="topic"
                         name="topic"
-                        className="mt-1 block w-full px-3 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                        className="mt-1 block w-full px-4 py-2 rounded-md shadow-md border border-purple-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                         value={formData.topic}
                         onChange={handleChange}
                         required
@@ -119,7 +120,7 @@ const AddProblemForm = () => {
                     <textarea
                         id="statement"
                         name="statement"
-                        className="mt-1 block w-full px-3 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                        className="mt-1 block w-full px-4 py-2 rounded-md shadow-md border border-purple-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                         value={formData.statement}
                         onChange={handleChange}
                         rows="4"
@@ -134,7 +135,7 @@ const AddProblemForm = () => {
                         type="text"
                         id="tutorialLink"
                         name="tutorialLink"
-                        className="mt-1 block w-full px-3 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                        className="mt-1 block w-full px-4 py-2 rounded-md shadow-md border border-purple-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                         value={formData.tutorialLink}
                         onChange={handleChange}
                     />
@@ -148,7 +149,7 @@ const AddProblemForm = () => {
                         name="difficulty"
                         value={formData.difficulty}
                         onChange={handleChange}
-                        className="mt-1 block w-full px-3 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                        className="mt-1 block w-full px-4 py-2 rounded-md shadow-md border border-purple-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                         required
                     >
                         <option value="">Select Difficulty</option>
@@ -166,7 +167,7 @@ const AddProblemForm = () => {
                             type="text"
                             id={`codeInput.${index}.language`}
                             name={`codeInput.${index}.language`}
-                            className="mt-1 block w-full px-3 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                            className="mt-1 block w-full px-4 py-2 rounded-md shadow-md border border-purple-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                             value={input.language}
                             onChange={handleChange}
                             required
@@ -177,7 +178,7 @@ const AddProblemForm = () => {
                         <textarea
                             id={`codeInput.${index}..template`}
                             name={`codeInput.${index}.template`}
-                            className="mt-1 block w-full px-3 py-2 border border-purple-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                            className="mt-1 block w-full px-4 py-2 rounded-md shadow-md border border-purple-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
                             value={input.template}
                             onChange={handleChange}
                             rows="4"
@@ -213,6 +214,7 @@ const AddProblemForm = () => {
                 </div>
             </form>
             <ToastContainer />
+        </div>
         </div>
     );
 };
