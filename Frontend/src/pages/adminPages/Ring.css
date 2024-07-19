@@ -1,0 +1,39 @@
+/* Ring.css */
+.ring-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .ring {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      #ff0000,
+      #ff9900,
+      #ffff00,
+      #33cc33,
+      #00ccff,
+      #9933ff,
+      #ff00ff,
+      #ff0000
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .inner-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  

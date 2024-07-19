@@ -66,7 +66,7 @@ const UserProfile = () => {
   return (
     <div className="max-w-4xl mx-auto p-8 shadow-lg rounded-lg bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 m-7 ">
         <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold text-purple-700">User Profile</h2>
+        <h2 className="text-2xl font-bold text-purple-700">Profile Board</h2>
           <div className="flex items-center space-x-4">
           <img
               src={Profile} // Replace with your profile icon image
@@ -90,7 +90,7 @@ const UserProfile = () => {
             onChange={handleInputChange}
             readOnly={!editMode}
             required
-            className="mt-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            className="mt-1 p-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-2xl"
           />
         </div>
         <div className="mb-4">
@@ -105,7 +105,7 @@ const UserProfile = () => {
             onChange={handleInputChange}
             readOnly={!editMode}
             required
-            className="mt-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            className="mt-1 p-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-2xl"
           />
         </div>
         <div className="mb-4">
@@ -118,7 +118,7 @@ const UserProfile = () => {
             name="role"
             value={user?.role || ''}
             readOnly
-            className="mt-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            className="mt-1 p-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-2xl"
           />
         </div>
         <div className="mb-4">
@@ -131,7 +131,7 @@ const UserProfile = () => {
             name="date"
             value={user ? new Date(user.date).toLocaleDateString() : ''}
             readOnly
-            className="mt-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            className="mt-1 p-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-2xl"
           />
         </div>
         <div className="mb-4">
@@ -146,7 +146,7 @@ const UserProfile = () => {
             readOnly={!editMode}
             required
             rows={3}
-            className="mt-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            className="mt-1 p-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-2xl"
           />
         </div>
         <div className="mb-4">

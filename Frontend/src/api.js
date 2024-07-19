@@ -152,14 +152,62 @@ export const getLeaderboard = async (ojid) => {
 // Function to submit solution
 export const submitSolution = async (data) => {
   try {
-    console.log("Entered Submission api");
-  const response = await axiosInstance.post('/submit', data);
-  console.log("\n response: " + response.data);
-  return response.data;
-  }
-  catch (error) {
+    console.log("Entered Submission API");
+    const response = await axiosInstance.post('/submit', data);
+    console.log("\nResponse:", JSON.stringify(response.data, null, 2));
+    return response.data;
+  } catch (error) {
     console.error('Error in submitSolution API:', error.response ? error.response.data : error.message);
     throw error;
-}
+  }
 };
 
+export const getUserSubmissions = async () => {
+  try {
+    const response = await axiosInstance.get('/submissions');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user submissions:', error);
+    throw error;
+  }
+};
+
+// Function to get problem details (assuming it exists)
+export const getProblemDetails = async (problemId) => {
+  try {
+    const response = await axiosInstance.get(`/problem/${problemId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching problem details:', error);
+    throw error;
+  }
+};
+
+
+export const getAllUsers = async () => {
+  try {
+    const response = await axiosInstance.get(`/allUsers`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch users', error);
+    throw error;
+  }
+};
+
+export const deleteUser = async (userId) => {
+  try {
+    await axiosInstance.delete(`/deleteUser/${userId}`);
+  } catch (error) {
+    console.error('Failed to delete user', error);
+    throw error;
+  }
+};
+export const getAllSubmissions = async () => {
+  try {
+    const response = await axiosInstance.get(`/allSubmissions`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch submissions', error);
+    throw error;
+  }
+};

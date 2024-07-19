@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
-const authController = require('../controllers/controllers');
+const controller = require('../controllers/controllers');
+const authController = require('../controllers/authControllers.js');
 const authMiddleware = require('../middleware/authMiddleware');
 const adminController = require('../controllers/adminControllers');
+const compilerController = require('../controllers/compilerControllers');
 
 router.post(
   '/signup',
@@ -53,11 +55,11 @@ router.post(
     check('userId', 'User ID is required').not().isEmpty(),
     check('problemId', 'Problem ID is required').not().isEmpty(),
   ],
-  authController.submitSolution
+  compilerController.submitSolution
 );
 
 // Route to fetch a solution by user ID and problem ID
-router.get('/fetch/:userId/:problemId', authController.getSolution);
+router.get('/fetch/:userId/:problemId', controller.getIndividualSolution);
 
 
 router.get('/testcases/:ojid', adminController.getTestCasesByProblemId);
@@ -66,13 +68,22 @@ router.put('/testcases/:ojid/:testCaseId', adminController.updateTestCase);
 router.delete('/testcases/:ojid/:testCaseId', adminController.deleteTestCase);
 
 
-router.post('/run', authController.run);
+router.post('/run', compilerController.run);
+
+router.get('/submissions', authMiddleware, controller.getUserSubmissions); // Modified route
+router.get('/problem/:problemId/', authMiddleware, controller.getProblem);
 
 
 
+router.get('/allProblems', controller.getAllProblems);
 
-router.get('/allProblems', authController.getAllProblems);
-router.get('/me', authMiddleware, authController.getUserDetails);
+router.get('/allUsers', controller.getAllUsers);
+router.get('/allSubmissions', controller.getAllSubmissions);
+
+
+router.delete('/deleteUser/:userId', controller.deleteUser);
+
+router.get('/me', authMiddleware, controller.getUserDetails);
 
 // PUT update user details
 router.put(
@@ -82,32 +93,32 @@ router.put(
     check('name', 'Name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
   ],
-  authController.updateUserDetails
+  controller.updateUserDetails
 );
 
 router.put('/update-stats-and-progress/:userId', async (req, res) => {
   const { userId } = req.params;
 
   try {
-    await authController.updateUserStatsAndProgress(userId);
+    await compilerController.updateUserStatsAndProgress(userId);
     res.status(200).json({ message: 'User stats and progress updated successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error updating user stats and progress' });
   }
 });
 
-router.get('/leaderboard/:ojid', authController.getProblemLeaderboard);
+router.get('/leaderboard/:ojid', controller.getProblemLeaderboard);
 
 // router.get('/leaderboard', adminController.getLeaderboard);
 
-// router.get('/submissions', authController.getSubmissions);
+// router.get('/submissions', controller.getSubmissions);
 
-// router.get('/submission/:userId/:problemId', authController.getSubmissionByUserIdAndProblemId);
+// router.get('/submission/:userId/:problemId', controller.getSubmissionByUserIdAndProblemId);
 
-// router.get('/results/:userId/:problemId', authController.getResultsByUserIdAndProblemId);
+// router.get('/results/:userId/:problemId', controller.getResultsByUserIdAndProblemId);
 
-// router.get('/test/:userId/:problemId/:testCaseId', authController.getTestByUserIdAndProblemIdAndTestCaseId);
+// router.get('/test/:userId/:problemId/:testCaseId', controller.getTestByUserIdAndProblemIdAndTestCaseId);
 
-// router.get('/results/:userId/:problemId/:testCaseId', authController.getResultsByUserIdAndProblemIdAndTestCaseId);
+// router.get('/results/:userId/:problemId/:testCaseId', controller.getResultsByUserIdAndProblemIdAndTestCaseId);
 
 module.exports = router;

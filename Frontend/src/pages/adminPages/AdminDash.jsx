@@ -6,6 +6,9 @@ import Upd from "../../assets/updated.png"
 import Trash from "../../assets/trash.png"
 import Add from "../../assets/add.png"
 import Tc from "../../assets/tc.png"
+import UserCountCard from './UserCountCard';
+import StackedBarChart from './StackedBarChart';
+import SubmissionsCountCard from './SubmissionCountCard';
 
 const AdminDash = () => {
   return (
@@ -79,10 +82,15 @@ const AdminDash = () => {
        
  
       </div>
-      <div className="">
-
-<h1>This is coming soon</h1>
-</div>
+      <div className="flex flex-col md:flex-row gap-4 p-4">
+      <div className="flex flex-col gap-4 w-full md:w-1/3">
+        <UserCountCard />
+        <SubmissionsCountCard />
+      </div>
+      <div className="flex flex-col w-full md:w-2/3">
+        <StackedBarChart />
+      </div>
+    </div>
     </div>
   );
 };

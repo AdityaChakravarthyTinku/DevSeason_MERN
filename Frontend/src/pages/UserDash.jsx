@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 import Image from "../assets/user.png"
 import View from "../assets/viewprob.png"
+import PieChart from '../components/PieChart';
+import BarChart from '../components/Barchart';
+import SubmissionCards from '../components/SubmissionCards';
+import StreakCard from '../components/StreakCard';
 
 const UserDashboard = () => {
   return (
@@ -33,6 +37,25 @@ const UserDashboard = () => {
 
        
  
+      </div>
+     
+      <div className="p-8 flex">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="col-span-1">
+            <PieChart />
+          </div>
+          <div className="col-span-1">
+            <BarChart />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 mx-2">
+          <div className="col-span-2">
+            <SubmissionCards />
+          </div>
+          <div className="row-span-2">
+            <StreakCard />
+          </div>
+        </div>
       </div>
     </div>
   );
