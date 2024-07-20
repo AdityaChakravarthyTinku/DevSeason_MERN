@@ -17,8 +17,12 @@ for (const dir in outputDirs) {
   }
 }
 
+
+
+
+
 // Function to execute code
-exports.execute = (language, filePath, inputFilePath) => {
+exports.executeWindows = (language, filePath, inputFilePath) => {
   const fileId = path.basename(filePath).split(".")[0];
   let outputFilePath = path.join(outputDirs[language], fileId);
 
@@ -53,6 +57,70 @@ exports.execute = (language, filePath, inputFilePath) => {
       return Promise.reject(new Error('Unsupported language'));
   }
   
+  console.log(`Executing command: ${command}`);
+
+  return new Promise((resolve, reject) => {
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        reject(error);
+      } else if (stderr) {
+        reject(stderr);
+      } else {
+        resolve(stdout);
+      }
+    });
+  });
+};
+
+
+
+// Function to execute code
+exports.executeLinux = (language, filePath, inputFilePath) => {
+  const fileId = path.basename(filePath).split(".")[0];
+  let outputFilePath = path.join(outputDirs[language], fileId);
+
+  let command;
+  switch (language) {
+    case 'c':
+      command = `
+        gcc "${filePath}" -o "${outputFilePath}.out" && 
+        cd "${outputDirs.c}" && 
+        "./${fileId}.out" < "${inputFilePath}"
+      `;
+      break;
+    case 'cpp':
+      command = `
+        g++ "${filePath}" -o "${outputFilePath}.out" && 
+        cd "${outputDirs.cpp}" && 
+        "./${fileId}.out" < "${inputFilePath}"
+      `;
+      break;
+    case 'java':
+      const javaCode = fs.readFileSync(filePath, 'utf-8');
+      const classNameMatch = javaCode.match(/public\s+class\s+(\w+)/);
+      if (!classNameMatch) {
+        throw new Error('Could not find public class declaration in Java code.');
+      }
+      const className = classNameMatch[1];
+
+      const javaFileName = `${className}.java`;
+      const newJavaFilePath = path.join(outputDirs.java, javaFileName);
+
+      console.log(`Copying file from ${filePath} to ${newJavaFilePath}`);
+      fs.copyFileSync(filePath, newJavaFilePath);
+
+      command = `
+        javac "${newJavaFilePath}" -d "${outputDirs.java}" && 
+        cd "${outputDirs.java}" && 
+        java ${className} < "${inputFilePath}"
+      `;
+      break;
+    case 'py':
+      command = `python3 "${filePath}" < "${inputFilePath}"`;
+      break;
+    default:
+      return Promise.reject(new Error('Unsupported language'));
+  }
   console.log(`Executing command: ${command}`);
 
   return new Promise((resolve, reject) => {

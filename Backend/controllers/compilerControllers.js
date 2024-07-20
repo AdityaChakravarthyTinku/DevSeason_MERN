@@ -13,7 +13,7 @@ const TestCase = require('../models/TestCase');
 
 const {generateFile}= require('../compiler/generateFile');
 const {generateInputFile}= require('../compiler/generateInputFile');
-const {execute}= require('../compiler/execute');
+const {executeWindows,executeLinux}= require('../compiler/execute');
 
 
 
@@ -36,7 +36,7 @@ exports.run = async (req, res) => {
     try {
       const filePath = await generateFile(language, code);
       const inputFilePath = await generateInputFile(language, input||'N/A');
-      const output = await execute(language, filePath, inputFilePath);
+      const output = await executeLinux(language, filePath, inputFilePath);
       res.send({ filePath, output, inputFilePath });
       console.log(`'\n'+${language}+'\n'+${output}`);
     } catch (err) {
@@ -47,19 +47,14 @@ exports.run = async (req, res) => {
   
   exports.updateUserStatsAndProgress = async (userId) => {
     try {
-      // Fetch all AC (Accepted) solutions by the user
       const solutions = await Solution.find({ userId, verdict: 'AC' });
   
-      // Calculate total attempts (including non-AC solutions)
       const totalAttempts = await Solution.countDocuments({ userId });
   
-      // Calculate problems solved
       const problemsSolved = solutions.length;
   
-      // Initialize progress tracker
       const progressTracker = {};
   
-      // Loop through each solution and fetch corresponding problem details
       for (const solution of solutions) {
         const problem = await Problem.findById(solution.problemId);
   
@@ -73,10 +68,9 @@ exports.run = async (req, res) => {
           progressTracker[topic] = {};
         }
   
-        progressTracker[topic][title] = solution._id; // Store solution ID
+        progressTracker[topic][title] = solution._id;
       }
   
-      // Convert progress tracker to the desired format
       const progressTrackerArray = Object.entries(progressTracker).map(([topicName, problems]) => ({
         topicName,
         problemsSolved: Object.entries(problems).map(([problemTitle, solutionId]) => ({
@@ -85,7 +79,6 @@ exports.run = async (req, res) => {
         })),
       }));
   
-      // Update user stats and progress in the database
       await User.findByIdAndUpdate(userId, {
         'profile.stats.problemsSolved': problemsSolved,
         'profile.stats.totalAttempts': totalAttempts,
@@ -139,7 +132,6 @@ exports.run = async (req, res) => {
       let totalRuntime = 0;
       let results = []; 
   
-      // Create a file for the user's code
       const filePath = await generateFile(language, code);
   
       // Execute the user's code for each test case
@@ -151,7 +143,7 @@ for (const [index, testCase] of testCases.testCases.entries()) {
     try {
       const startTime = Date.now();
       //   console.log('Strteddd:::\n\n' + inputFilePath + '\n\n'+filePath +'\n\n'+ testCase)
-      const output = await execute(language, filePath, inputFilePath);
+      const output = await executeLinux(language, filePath, inputFilePath);
       const endTime = Date.now();
       const runtime = endTime - startTime;
       totalRuntime += runtime;
