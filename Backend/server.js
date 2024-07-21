@@ -12,14 +12,14 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 connectDB();
-// const corsOptions = {
-//     origin: 'http://localhost:5173', // Replace with your frontend URL
-//     credentials: true, // This allows cookies to be sent from the frontend
-//   };
+const corsOptions = {
+    origin: 'http://localhost:5173', // Replace with your frontend URL
+    credentials: true, // This allows cookies to be sent from the frontend
+  };
   
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
   
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

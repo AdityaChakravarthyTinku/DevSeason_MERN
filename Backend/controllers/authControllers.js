@@ -58,8 +58,10 @@ exports.registerUser = async (req, res) => {
     const options = {
       expires: new Date(Date.now() + 3600000), // 1 hour
       httpOnly: true,
+      sameSite: 'None',
+      secure: true, // Set to true for HTTPS, false for HTTP (during development)
     };
-
+    
     res.status(201).cookie("token", token, options).json({
       message: 'User registered successfully!',
       success: true,
@@ -116,10 +118,12 @@ exports.loginUser = async (req, res) => {
     const options = {
       expires: new Date(Date.now() + 3600000), // 1 hour
       httpOnly: true,
+      sameSite: 'None',
+      secure: true, // Set to true for HTTPS, false for HTTP (during development)
     };
-
-    res.status(200).cookie("token", token, options).json({
-      message: 'You have logged in successfully!',
+    
+    res.status(201).cookie("token", token, options).json({
+      message: 'User logged in successfully!',
       success: true,
       token,
       user: {
@@ -129,6 +133,7 @@ exports.loginUser = async (req, res) => {
         role: user.role,
       },
     });
+
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
@@ -138,17 +143,14 @@ exports.loginUser = async (req, res) => {
 exports.logoutUser = async (req, res) => {
   try {
     res.clearCookie('token');
-    res.json({ success: true, message: 'Logged out successfully' });
     console.log('User logged out');
-    setTimeout(()=> {
-      console.log('Logging and redirecting to home via timeout');
-      res.redirect('/');
-    },2000)
+    res.json({ success: true, message: 'Logged out successfully' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
+
 
 exports.checkAuth = async (req, res) => {
   try {

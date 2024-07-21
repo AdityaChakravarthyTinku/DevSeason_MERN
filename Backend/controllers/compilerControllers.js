@@ -36,7 +36,7 @@ exports.run = async (req, res) => {
     try {
       const filePath = await generateFile(language, code);
       const inputFilePath = await generateInputFile(language, input||'N/A');
-      const output = await executeLinux(language, filePath, inputFilePath);
+      const output = await executeWindows(language, filePath, inputFilePath);
       res.send({ filePath, output, inputFilePath });
       console.log(`'\n'+${language}+'\n'+${output}`);
     } catch (err) {
@@ -134,8 +134,7 @@ exports.run = async (req, res) => {
   
       const filePath = await generateFile(language, code);
   
-      // Execute the user's code for each test case
-// Execute the user's code for each test case
+
 for (const [index, testCase] of testCases.testCases.entries()) {
     const inputFilePath = await generateInputFile(language, testCase.input);
     let result = { testCaseNumber: index + 1, status: 'Passed' };
@@ -143,7 +142,7 @@ for (const [index, testCase] of testCases.testCases.entries()) {
     try {
       const startTime = Date.now();
       //   console.log('Strteddd:::\n\n' + inputFilePath + '\n\n'+filePath +'\n\n'+ testCase)
-      const output = await executeLinux(language, filePath, inputFilePath);
+      const output = await executeWindows(language, filePath, inputFilePath);
       const endTime = Date.now();
       const runtime = endTime - startTime;
       totalRuntime += runtime;
@@ -161,17 +160,15 @@ for (const [index, testCase] of testCases.testCases.entries()) {
     } catch (err) {
       console.error(`Error executing test case: ${err.message}`);
       if (err.message.includes('timeout')) {
-        verdict = 'TLE'; // Time Limit Exceeded
+        verdict = 'TLE';
       } else if (err.message.includes('memory')) {
-        verdict = 'MLE'; // Memory Limit Exceeded
-      } else if (err.message.includes('output')) {
-        verdict = 'OLE'; // Output Limit Exceeded
+        verdict = 'MLE'; 
       } else if (err.message.includes('runtime')) {
-        verdict = 'RE'; // Runtime Error
+        verdict = 'RE';
       } else if (err.message.includes('compile')) {
-        verdict = 'CE'; // Compilation Error
+        verdict = 'CE'; 
       } else {
-        verdict = 'RE'; // Default to Runtime Error for any other errors
+        verdict = 'RE'; 
       }
       break;
     }
@@ -179,12 +176,13 @@ for (const [index, testCase] of testCases.testCases.entries()) {
     results.push(result);
   }
   
-  // Calculate the attempt interval and penalty score
-  const attemptInterval = 0; // This would be calculated based on your criteria
-  const penaltyScore = 0; // This would be calculated based on your criteria
+ 
+  const attemptInterval = 0; // This would be calculated based on a criteria soon
+  let penaltyScore = 0; // This would be calculated based on a criteria soon
   
-  // Check if the solution already exists for the user and problem
+
   let solution = await Solution.findOne({ userId, problemId });
+  penaltyScore = solution.penaltyScore;
   
   if (solution) {
     // Update the existing solution
@@ -192,7 +190,7 @@ for (const [index, testCase] of testCases.testCases.entries()) {
     solution.runtime = totalRuntime;
     solution.language = language;
     solution.attemptInterval = attemptInterval;
-    solution.penaltyScore = penaltyScore;
+    solution.penaltyScore = penaltyScore+1;
     solution.submittedTime = Date.now();
   } else {
     // Create a new solution
@@ -211,7 +209,7 @@ for (const [index, testCase] of testCases.testCases.entries()) {
   
   await exports.updateUserStatsAndProgress(userId);
   
-  // Log the results array
+ 
   console.log("\n\n" + JSON.stringify(results, null, 2));
   
   res.status(201).json({

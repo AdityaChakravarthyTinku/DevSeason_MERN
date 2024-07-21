@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <nav className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4 text-white">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold">Online Judge</Link>
+        <Link to="/" className="text-2xl font-bold">Giggle Code</Link>
         <div >
           <Link to="/" className="mr-4  mb-4 p-2 text-white rounded font-bold shadow-md w-full sm:w-96 hover:bg-gradient-to-bl to-violet-900">Home</Link>
           <Link to="/" className="mr-4  mb-4 p-2 text-white rounded font-bold shadow-md hover:bg-gradient-to-bl to-violet-900">Explore</Link>

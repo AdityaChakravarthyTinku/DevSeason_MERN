@@ -1,14 +1,17 @@
 import axios from 'axios';
 
-const API_URL = 'http://65.1.147.242:5000/';
-// const API_URL = 'http://localhost:5000/';
+
+// // const API_URL = 'http://13.202.20.170:5000/';
+// const API_URL = 'https://backend.gigglecode.online/';
+const API_URL = 'http://localhost:5000/';
+
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  // withCredentials: true,
+  withCredentials: true,
 });
 
 
@@ -28,6 +31,16 @@ export const loginUser = async (formData) => {
   } catch (error) {
     throw error.response.data;
   }
+};
+
+export const logoutUser = async () => {
+  const response = await axiosInstance.post('/logout');
+  return response.data;
+};
+
+export const checkAuth = async () => {
+  const response = await axiosInstance.get('/check');
+  return response.data;
 };
 
 export const getUserDetails = async () => {
