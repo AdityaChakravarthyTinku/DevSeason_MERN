@@ -2,8 +2,8 @@ import axios from 'axios';
 
 
 // // const API_URL = 'http://13.202.20.170:5000/';
-// const API_URL = 'https://backend.gigglecode.online/';
-const API_URL = 'http://localhost:5000/';
+const API_URL = 'https://backend.gigglecode.online/';
+// const API_URL = 'http://localhost:5000/';
 
 
 const axiosInstance = axios.create({
