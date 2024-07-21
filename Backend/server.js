@@ -13,7 +13,7 @@ const app = express();
 
 connectDB();
 const corsOptions = {
-    origin: 'http://localhost:5173', // Replace with your frontend URL
+    origin: 'gigglecode.online', // Replace with your frontend URL
     credentials: true, // This allows cookies to be sent from the frontend
   };
   
