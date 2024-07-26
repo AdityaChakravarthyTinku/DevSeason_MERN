@@ -6,23 +6,33 @@ const dotenv = require('dotenv');
 const routes = require('./routes/routes');
 dotenv.config();
 const cookieParser = require('cookie-parser');
-
 // Add cookie parser middleware before your routes
 
 const app = express();
 
 connectDB();
-const corsOptions = {
-    origin: 'gigglecode.online', // Replace with your frontend URL
+
+const allowedOrigins = [
+    'http://localhost:5173',  // Local development
+    'https://gigglecode.online' // Production frontend
+  ];
+  
+  const corsOptions = {
+    origin: function (origin, callback) {
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true, // This allows cookies to be sent from the frontend
   };
   
-app.use(cors(corsOptions));
-  
+  app.use(cors(corsOptions));
 // app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser()); 
 
 app.use(routes);
 app.get('/', (req, res) => {

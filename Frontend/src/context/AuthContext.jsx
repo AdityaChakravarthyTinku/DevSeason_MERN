@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { loginUser, registerUser, getUserDetails, logoutUser, checkAuth } from '../api';
+import { loginUser, registerUser, getUserDetails, logoutUser } from '../api';
 
 export const AuthContext = createContext();
 
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
       setUser(userDetails);
     } catch (error) {
       console.error('Error fetching user details:', error);
-      logout(); // Logout if token is invalid or expired
+      logout(); 
     }
   }, []);
 
@@ -34,26 +34,26 @@ export const AuthProvider = ({ children }) => {
     }
   }, [fetchUserDetails]);
 
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      try {
-        const response = await checkAuth();
-        if (response.authenticated) {
-          setIsLoggedIn(true);
-          setUser(response.user);
-        } else {
-          setIsLoggedIn(false);
-          setUser(null);
-        }
-      } catch (error) {
-        console.error('Error checking authentication:', error);
-        setIsLoggedIn(false);
-        setUser(null);
-      }
-    };
+  // useEffect(() => {
+  //   const checkAuthentication = async () => {
+  //     try {
+  //       const response = await checkAuth();
+  //       if (response.authenticated) {
+  //         setIsLoggedIn(true);
+  //         setUser(response.user);
+  //       } else {
+  //         setIsLoggedIn(false);
+  //         setUser(null);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error checking authentication:', error);
+  //       setIsLoggedIn(false);
+  //       setUser(null);
+  //     }
+  //   };
 
-    checkAuthentication();
-  }, []);
+  //   checkAuthentication();
+  // }, []);
 
   const login = async (formData, isAdminLogin) => {
     try {
@@ -96,12 +96,13 @@ export const AuthProvider = ({ children }) => {
       await logoutUser();
       localStorage.removeItem('jwtToken');
       localStorage.removeItem('userType');
-      localStorage.removeItem('userId'); // Remove user ID
+      localStorage.removeItem('userId'); 
+      console.log('User Logging out Successfully');
       setIsLoggedIn(false);
       setUser(null);
       setTimeout(() => {
         window.location.href = '/';
-      }, 2000);
+      }, 1000);
     } catch (error) {
       console.error('Logout error:', error);
     }

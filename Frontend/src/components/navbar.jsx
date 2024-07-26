@@ -11,7 +11,7 @@ const Navbar = () => {
         <Link to="/" className="text-2xl font-bold">Giggle Code</Link>
         <div >
           <Link to="/" className="mr-4  mb-4 p-2 text-white rounded font-bold shadow-md w-full sm:w-96 hover:bg-gradient-to-bl to-violet-900">Home</Link>
-          <Link to="/" className="mr-4  mb-4 p-2 text-white rounded font-bold shadow-md hover:bg-gradient-to-bl to-violet-900">Explore</Link>
+          <Link to="/explore" className="mr-4  mb-4 p-2 text-white rounded font-bold shadow-md hover:bg-gradient-to-bl to-violet-900">Explore</Link>
 
           {isLoggedIn ? (
             <>

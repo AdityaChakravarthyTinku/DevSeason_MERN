@@ -11,4 +11,3 @@ compiler/coutput
 compiler/cppoutput
 compiler/javaoutput
 compiler/pyoutput
-.env

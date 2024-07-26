@@ -6,6 +6,7 @@ import { ProblemProvider } from './context/ProblemContext';
 
 
 import Home from './pages/Home';
+import Explore from './pages/Explore';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AdminDashboard from './pages/adminPages/AdminDash';
@@ -14,6 +15,7 @@ import AddProblemForm from './pages/adminPages/AddProblem';
 import AddTestCase from './pages/adminPages/AddTestCase';
 import DeleteProblem from './pages/adminPages/DeleteProblem';
 import UpdateProblem from './pages/adminPages/UpdateProblem';
+
 
 import ProblemPage from './pages/ProblemPage';
 
@@ -31,6 +33,7 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/explore" element={<Explore />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
