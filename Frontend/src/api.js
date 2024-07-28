@@ -4,9 +4,9 @@ import axios from 'axios';
 // const API_URL = 'http://13.202.20.170:5000/';//Issue with Mixed Content
 
 //HOSTED DOMAIN HTTPS
-const API_URL = 'https://backend.gigglecode.online/';
+// const API_URL = 'https://backend.gigglecode.online/';
 
-// const API_URL = 'http://localhost:5000/';//localHost 
+const API_URL = 'http://localhost:5000/';//localHost 
 
 
 
@@ -40,6 +40,16 @@ export const loginUser = async (formData) => {
 export const logoutUser = async () => {
   const response = await axiosInstance.post('/logout');
   return response.data;
+};
+
+export const checkAuth = async () => {
+  try {
+    const response = await axiosInstance.get('/check-auth');
+    return response.data;
+  } catch (error) {
+    console.error('Error checking authentication:', error);
+    throw error;
+  }
 };
 
 export const getUserDetails = async () => {

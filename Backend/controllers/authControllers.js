@@ -6,13 +6,10 @@ const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const dotenv = require('dotenv');
 const cookieParser = require("cookie-parser");
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
 
 const User = require('../models/User');
-const Problem = require('../models/Problem');
-const Solution = require('../models/Solution');
-const TestCase = require('../models/TestCase');
 
 
 
@@ -152,8 +149,13 @@ exports.logoutUser = async (req, res) => {
 };
 
 
+
 exports.checkAuth = async (req, res) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ authenticated: false, message: 'Not authenticated' });
+    }
+    console.log(req.user);
     res.status(200).json({ authenticated: true, user: req.user });
   } catch (err) {
     console.error(err.message);

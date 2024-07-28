@@ -30,7 +30,7 @@ router.post(
 
 router.post('/logout', authMiddleware, authController.logoutUser);
 
-router.get('/check', authMiddleware, authController.checkAuth);
+router.get('/check-auth', authMiddleware, authController.checkAuth);
 
 
 // Route to add a new problem

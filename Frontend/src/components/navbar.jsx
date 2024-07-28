@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
   const { isLoggedIn, user, logout } = useContext(AuthContext);
+  console.log(user);
 
   return (
     <nav className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4 text-white">

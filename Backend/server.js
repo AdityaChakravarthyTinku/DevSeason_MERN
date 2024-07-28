@@ -6,29 +6,35 @@ const dotenv = require('dotenv');
 const routes = require('./routes/routes');
 dotenv.config();
 const cookieParser = require('cookie-parser');
-// Add cookie parser middleware before your routes
+
+
 
 const app = express();
 
 connectDB();
 
 const allowedOrigins = [
-    'http://localhost:5173',  // Local development
-    'https://gigglecode.online' // Production frontend
-  ];
-  
-  const corsOptions = {
+    'http://localhost:5173',
+    'https://dev-season-mern-9hyovefy6-adityas-projects-9aa86a3f.vercel.app',
+    'https://gigglecode.online',
+    'https://www.gigglecode.online',
+    'https://backend.gigglecode.online',
+    'https://backend.gigglecode.online'
+];
+
+const corsOptions = {
     origin: function (origin, callback) {
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
     },
-    credentials: true, // This allows cookies to be sent from the frontend
-  };
-  
-  app.use(cors(corsOptions));
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 // app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
