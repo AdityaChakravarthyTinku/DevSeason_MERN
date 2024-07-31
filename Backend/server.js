@@ -19,7 +19,8 @@ const allowedOrigins = [
     'https://gigglecode.online',
     'https://www.gigglecode.online',
     'https://backend.gigglecode.online',
-    'https://backend.gigglecode.online'
+    'https://backend.gigglecode.online',
+    'https://dev-season-mern.vercel.app'
 ];
 
 const corsOptions = {
