@@ -157,13 +157,13 @@ const ProblemLayout = () => {
                         <div className="mt-4 flex space-x-4">
                             <button
                                 onClick={handleRun}
-                                className="bg-secondary-dark text-white px-4 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:bg-secondary"
+                                className="bg-secondary-dark text-white px-4 py-2 rounded-md hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-green-500"
                             >
                                 Run
                             </button>
                             <button
                                 onClick={handleSubmit}
-                                className="bg-primary-dark text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:bg-primary"
+                                className="bg-primary-dark text-white px-4 py-2 rounded-md hover:bg-primary focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 Submit
                             </button>
