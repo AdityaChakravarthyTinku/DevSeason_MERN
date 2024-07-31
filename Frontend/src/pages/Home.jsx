@@ -21,7 +21,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 flex flex-col items-center">
       <div className="bg-white p-8 rounded shadow-md w-full sm:w-4/5 lg:w-3/5 m-3 text-center">
-        <h1 className="text-4xl font-bold mb-4 text-primary-dark">Welcome to Giggle Code, {user?.name || 'User'} </h1>
+        <h1 className="text-4xl font-bold mb-4 text-primary-dark">Welcome to The Giggle Code, {user?.name || 'User'} </h1>
         <Lottie options={defaultOptions} height={300} width={300} />
 
         {isLoggedIn ? (
