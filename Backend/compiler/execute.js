@@ -90,9 +90,9 @@ exports.executeLinux = (language, filePath, inputFilePath) => {
       break;
     case 'cpp':
       command = `
-        g++ "${filePath}" -o "${outputFilePath}.out" && 
-        cd "${outputDirs.cpp}" && 
-        "./${fileId}.out" < "${inputFilePath}"
+        g++ ${filePath} -o ${outputFilePath}.out && 
+        cd ${outputDirs.cpp} && 
+        ./${fileId}.out < ${inputFilePath}
       `;
       break;
     case 'java':

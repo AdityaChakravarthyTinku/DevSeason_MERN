@@ -36,7 +36,7 @@ exports.run = async (req, res) => {
     try {
       const filePath = await generateFile(language, code);
       const inputFilePath = await generateInputFile(language, input||'N/A');
-      const output = await executeWindows(language, filePath, inputFilePath);
+      const output = await executeLinux(language, filePath, inputFilePath);
       res.send({ filePath, output, inputFilePath });
       console.log(`'\n'+${language}+'\n'+${output}`);
     } catch (err) {
@@ -142,7 +142,7 @@ for (const [index, testCase] of testCases.testCases.entries()) {
     try {
       const startTime = Date.now();
       //   console.log('Strteddd:::\n\n' + inputFilePath + '\n\n'+filePath +'\n\n'+ testCase)
-      const output = await executeWindows(language, filePath, inputFilePath);
+      const output = await executeLinux(language, filePath, inputFilePath);
       const endTime = Date.now();
       const runtime = endTime - startTime;
       totalRuntime += runtime;
